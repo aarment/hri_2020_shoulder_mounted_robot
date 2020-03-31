@@ -1,0 +1,67 @@
+#include <Servo.h>
+Servo twist;
+Servo tilt;
+
+int posTwist = 0; //Head lateral position
+int posTilt = 0;//Head vertical position
+int n = 0;
+
+void setup() {
+  // put your setup code here, to run once:
+  twist.attach(11);
+  tilt.attach(10);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+  shake();
+  delay(1000);
+  nod();
+  delay(1000);
+  quirk();
+  delay(1000);
+
+}
+
+void shake() {//shakes head 180 degrees 7 times
+  for (n = 0; n < 7; n += 1) {
+    for (posTwist = 0; posTwist <= 180; posTwist += 1) {
+      twist.write(posTwist);
+      delay(1);
+    }
+    for (posTwist = 180; posTwist >= 0; posTwist -= 1) {
+      twist.write(posTwist);
+      delay(1);
+    }
+  }
+  twist.write(90);
+}
+
+
+void nod() {//nods head/body 60 degrees 7 times (note, "nod" does not have as much freedom as "shake" does
+  for (n = 0; n < 7; n += 1) {
+    for (posTilt = 60; posTilt <= 120; posTilt += 1) {
+      tilt.write(posTilt);
+      delay(2);
+    }
+    for (posTilt = 120; posTilt >= 60; posTilt -= 1) {
+      tilt.write(posTilt);
+      delay(2);
+    }
+  }
+  tilt.write(90);
+}
+
+
+void quirk() {//leans forward and twists head in a "huh?" gesture holds it for 3 seconds then returns to original position
+  tilt.write(60);
+  delay(100);
+  twist.write(60);
+  delay(3000);
+  tilt.write(90);
+  delay(100);
+  twist.write(90);
+  delay(1000);
+}
+
